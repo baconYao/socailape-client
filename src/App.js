@@ -4,34 +4,32 @@ import './App.css';
 import { MuiThemeProvider } from '@material-ui/core/styles';
 import createMuiTheme from '@material-ui/core/styles/createMuiTheme';
 import axios from 'axios';
+import themeFile from './util/theme';
+import jwtDecode from 'jwt-decode';
 
 // Components
 import Navbar from './components/Navbar';
-
+import AuthRoute from './util/AuthRoute';
 // Pages
 import home from './pages/home';
 import login from './pages/login';
 import signup from './pages/signup';
 
-const theme = createMuiTheme({
-  palette: {
-    primary: {
-      light: '#33c9dc',
-      main: '#00bcd4',
-      dark: '#008394',
-      contrastText: '#fff',
-    },
-    secondary: {
-      light: '#ff6333',
-      main: '#ff3d00',
-      dark: '#b22a00',
-      contrastText: '#fff',
-    }
-  },
-  typography: {
-    useNextVariants: true
+const theme = createMuiTheme(themeFile);
+
+let authenticated;
+const token = localStorage.FBIdToken;
+if(token) {
+  const decodedToken = jwtDecode(token);
+  console.log(decodedToken);
+  if(decodedToken.exp * 1000 < Date.now()) {
+    // token expire，就會導向 /login 畫面
+    window.location.href = '/login';
+    authenticated = false;
+  } else {
+    authenticated = true;
   }
-});
+}
 
 function App() {
   // 設定 axios 的預設 baseURL (雖然在 package.json 內有設定 proxy，但 axios 在 login時，依然會從localhost/login)，因此要設定
@@ -44,8 +42,8 @@ function App() {
           <div className="container">
             <Switch>
               <Route exact path="/" component={home}/>
-              <Route exact path="/login" component={login}/>
-              <Route exact path="/signup" component={signup}/>
+              <AuthRoute exact path="/login" component={login} authenticated={authenticated}/>
+              <AuthRoute exact path="/signup" component={signup} authenticated={authenticated}/>
             </Switch>
           </div>
         </Router>
