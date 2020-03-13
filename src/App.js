@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import './App.css';
 import { MuiThemeProvider } from '@material-ui/core/styles';
 import createMuiTheme from '@material-ui/core/styles/createMuiTheme';
+import axios from 'axios';
 
 // Components
 import Navbar from './components/Navbar';
@@ -33,6 +34,8 @@ const theme = createMuiTheme({
 });
 
 function App() {
+  // 設定 axios 的預設 baseURL (雖然在 package.json 內有設定 proxy，但 axios 在 login時，依然會從localhost/login)，因此要設定
+  axios.defaults.baseURL = "https://asia-east2-socialape-1d0c1.cloudfunctions.net/api";
   return (
     <MuiThemeProvider theme={theme}>
       <div className="App">
