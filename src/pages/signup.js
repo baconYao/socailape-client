@@ -46,7 +46,7 @@ class signup extends Component {
       .then((res) => {
         console.log(res.data);
         // 設置 localStorage 存 token
-        localStorage.setItem('FBidToken', `Bearer ${res.data.token}`);
+        localStorage.setItem('FBIdToken', `Bearer ${res.data.token}`);
         this.setState({
           loading: false
         });

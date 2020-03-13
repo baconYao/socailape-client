@@ -5,9 +5,11 @@ const AuthRoute =({ component: Component, authenticated, ...rest }) => (
   /* 用來檢查 authenticated 是否為 true，若沒有則導回 "/"，有的話，則導向傳進來的 Component
    * component: Component => 被傳進來的 component
    */
-  <Route 
+  <Route
     {...rest}
-    render={(props) => authenticated === true ? <Redirect to="/" /> : <Component {...props} />}
+    render={(props) => 
+      authenticated === true ? <Redirect to="/" /> : <Component {...props} />
+    }
   />
 );
 

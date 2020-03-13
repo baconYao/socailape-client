@@ -19,7 +19,9 @@ const theme = createMuiTheme(themeFile);
 
 let authenticated;
 const token = localStorage.FBIdToken;
+console.log(token)
 if(token) {
+  console.log("!!!!!")
   const decodedToken = jwtDecode(token);
   console.log(decodedToken);
   if(decodedToken.exp * 1000 < Date.now()) {
